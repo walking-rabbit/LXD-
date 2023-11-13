@@ -103,17 +103,6 @@ sudo lxc config device add seulab proxy2 proxy listen=tcp:10.193.0.11:6004 conne
 
 <br>
 
-**配置SSH连接**
-```
-vim /etc/ssh/sshd_config
-
-PermitRootLogin yes
-PasswordAuthentication yes
-
-/etc/init.d/ssh restart
-```
-<br>
-
 ## 容器内的环境配置
 
 **通过`lxc exec seulab bash`进入容器，容器内的环境配置在默认用户ubuntu的权限下继续**
@@ -154,6 +143,19 @@ export PATH=/usr/local/cuda-12.1/bin${PATH:+:${PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 nvcc -V
 ```
+
+<br>
+
+**配置SSH连接**
+```
+vim /etc/ssh/sshd_config
+
+PermitRootLogin yes
+PasswordAuthentication yes
+
+/etc/init.d/ssh restart
+```
+
 <br>
 
 ## 安装可视化界面
