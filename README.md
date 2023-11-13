@@ -9,13 +9,13 @@ Ubuntu 20.04 安装时，要注意Ubuntu系统的引导方式，若选择uefi引
 
 <br>
 
-***固定内核版本,防止内核升级造成Nvidia driver不可用***
+**固定内核版本,防止内核升级造成Nvidia driver不可用**
 
 `sudo apt-mark hold linux-image-generic linux-headers-generic`
 
 <br>
 
-***安装宿主机驱动Nvidia driver时，使用软件包下载安装。若安装失败，注意更改BIOS的安全启动菜单***
+**安装宿主机驱动Nvidia driver时，使用软件包下载安装。若安装失败，注意更改BIOS的安全启动菜单**
 ```
 sudo sh ./NVIDIA-Linux-x86_64-530.30.02.run
 nvidia-smi
@@ -24,18 +24,19 @@ nvidia-smi
 
 <br>
 
-***注意不要配置宿主机网络***
+**注意不要配置宿主机网络**
 
 <br>
 
-***安装lxd,zfs和bridge-utils***
+**安装lxd,zfs和bridge-utils**
 ```
 sudo snap install lxd
 sudo apt install zfsutils-linux bridge-utils
 ```
+<br>
 
 ## LXD初始化
-***初始化命令***
+**初始化命令**
 
 `sudo lxd init`
 > lxd的zfs不挂载到其他硬盘上，按照`sudo lxd init`的默认值，zfs存储池建立在4T的SSD上，lxd将此池作为容器的默认创建池<br>
@@ -45,7 +46,7 @@ sudo apt install zfsutils-linux bridge-utils
 
 <br>
 
-***lxd初始化过程中关键选项***
+**lxd初始化过程中关键选项**
 ```
 Create a new ZFS pool? (yes/no) [default=yes]: yes
 Would you like to use an existing block device? (yes/no) [default=no]: no
@@ -55,9 +56,10 @@ Size in GB of the new loop device (1GiB minimum) [default=30GiB]: 100GiB
 >网络配置采用创建桥接网络，宿主机为公网ip 10.193.0.11，其他容器为局域网ip，访问每个容器通过公网ip+端口号的形式<br>
 >通过命令`lxc network list`能够查看创建的桥接网络
 
+<br>
 
 ## 创建容器 seulab
-***通过命令`lxc launch ubuntu:20.04 seulab` 创建名为seulab的容器***
+**通过命令`lxc launch ubuntu:20.04 seulab` 创建名为seulab的容器**
 > 容器相关命令：容器列表，进入容器，退出容器，删除容器，停止容器，重启容器
 >```
 > lxc list  
@@ -70,7 +72,7 @@ Size in GB of the new loop device (1GiB minimum) [default=30GiB]: 100GiB
 
 <br>
 
-***创建共享文件夹***
+**创建共享文件夹**
 ```
 sudo lxc config set seulab security.privileged true
 sudo lxc config device add seulab ShareData disk source=/media/seulab/data1/dockershare path=/home/ubuntu/ShareData
@@ -82,13 +84,13 @@ sudo lxc config device add seulab ShareData disk source=/media/seulab/data1/dock
 
 <br>
 
-***添加GPU硬件***
+**添加GPU硬件**
 
 `lxc config device add seulab gpu gpu`
 
 <br>
 
-***配置网络***
+**配置网络**
 ```
 sudo lxc config device add seulab proxy1 proxy listen=tcp:10.193.0.11:6002 connect=tcp:10.18.100.xxx:22 bind=host
 sudo lxc config device add seulab proxy0 proxy listen=tcp:10.193.0.11:6003 connect=tcp:10.18.100.xxx:3389 bind=host
@@ -101,9 +103,9 @@ sudo lxc config device add seulab proxy2 proxy listen=tcp:10.193.0.11:6004 conne
 
 <br>
 
-***容器内的环境配置***
+## 容器内的环境配置
 
-通过`lxc exec seulab bash`进入容器，容器内的环境配置在默认用户ubuntu的权限下继续
+**通过`lxc exec seulab bash`进入容器，容器内的环境配置在默认用户ubuntu的权限下继续**
 ```
 passwd ubuntu
 login ubuntu
@@ -112,7 +114,7 @@ login ubuntu
 
 <br>
 
-更改容器内的软件源，校园网下使用seu的软件源，速度较快
+**更改容器内的软件源，校园网下使用seu的软件源，速度较快**
 ```
 sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak`<br>
 sudo vim /etc/apt/sources.list
@@ -125,7 +127,7 @@ deb http://mirrors.seu.edu.cn/ubuntu/ focal-security main restricted universe mu
 
 <br>
 
-依次安装Nvidia driver，Anaconda，Vscode，Cuda
+**依次安装Nvidia driver，Anaconda，Vscode，Cuda**
 ```
 sudo sh ./NVIDIA-Linux-x86_64-530.30.02.run  --no-kernel-module
 nvidia-smi
@@ -143,7 +145,7 @@ nvcc -V
 ```
 <br>
 
-***安装可视化界面<br>***
+## 安装可视化界面
 
 ```
 sudo apt install xfce4
@@ -152,13 +154,13 @@ sudo apt install tigervnc-standalone-server
 
 <br>
 
-设置远程桌面密码 `vncpasswd`
+**设置远程桌面密码 `vncpasswd`**
 >远程桌面密码默认设置为000000<br>
 >远程桌面密码为网页端登录密码，ubuntu账号密码为ssh登录密码
 
 <br>
 
-创建开机启动图形化界面脚本
+**创建开机启动图形化界面脚本**
 ```
 nano ~/.vnc/xstartup
 
@@ -168,7 +170,7 @@ startxfce4 &
 
 <br>
 
-创建vnc开机启动方法
+**创建vnc开机启动方法**
 ```
 sudo nano /etc/systemd/system/vncserver@.service
 
@@ -188,36 +190,33 @@ WantedBy=multi-user.target
 
 <br>
 
-系统重新加载服务列表
-`sudo systemctl daemon-reload`
+**系统重新加载服务列表 `sudo systemctl daemon-reload`**
 
-启动开机自启动服务
-`sudo systemctl enable vncserver@1.service`
+**启动开机自启动服务 `sudo systemctl enable vncserver@1.service`**
 
-启动vnc服务
-`sudo systemctl start vncserver@1.service`
+**启动vnc服务 `sudo systemctl start vncserver@1.service`**
 >`sudo systemctl status vncserver@1.service` 检查未正常启动原因
 
 <br>
 
-安装配置novnc
+**安装配置novnc**
 ```
 sudo snap install novnc
 sudo snap set novnc services.n6081.listen=6081 services.n6081.vnc=localhost:5901
 ```
 >创建一个侦听6081端口，并将6081连接到VNC服务器，VNC服务器在localhost的5901端口上运行
-
+<br>
 
 ## 管理相关容器
-基于seulab容器，创建lab快照 `sudo lxc snapshot seulab lab`
+**基于seulab容器，创建lab快照 `sudo lxc snapshot seulab lab`**
 
-查看容器的快照 `lxc info seulab`
+**查看容器的快照 `lxc info seulab`**
 
-用快照生成容器XXX `sudo lxc copy seulab/lab XXX`
+**用快照生成容器XXX `sudo lxc copy seulab/lab XXX`**
 
 <br>
 
-***删除容器XXX proxy配置***
+**删除容器XXX proxy配置**
 ```
 sudo lxc config device remove XXX proxy1
 sudo lxc config device remove XXX proxy0
@@ -230,14 +229,14 @@ sudo lxc config device list XXX
 
 <br>
 
-***查看容器XXX的新ip地址,即lxc list中的IPV4,假设为10.18.100.xxx***
+**查看容器XXX的新ip地址,即lxc list中的IPV4,假设为10.18.100.xxx**
 ```
 sudo lxc start XXX
 sudo lxc list
 ```
 <br>
 
-***重新给容器XXX分配端口***
+**重新给容器XXX分配端口**
 ```
 sudo lxc config device add XXX proxy1 proxy listen=tcp:10.193.0.11:6012 connect=tcp:10.18.100.xxx:22 bind=host
 sudo lxc config device add XXX proxy0 proxy listen=tcp:10.193.0.11:6013 connect=tcp:10.18.100.xxx:3389 bind=host
@@ -251,7 +250,7 @@ sudo lxc config device add XXX proxy2 proxy listen=tcp:10.193.0.11:6014 connect=
 
 <br>
 
-***设置ssh密码***
+**设置ssh密码**
 ```
 sudo lxc exec XXX bash
 passwd ubuntu
@@ -261,7 +260,7 @@ passwd ubuntu
 
 <br>
 
-***以从seulab复制创建的第一个容器为例***
+**以从seulab复制创建的第一个容器为例**
 
 http://10.193.0.11:6014/vnc.html 是接入校园网的情况下，浏览器中的可视化界面，网页初始登录密码为000000，更改密码`vncpasswd`
 
@@ -269,7 +268,7 @@ http://10.193.0.11:6014/vnc.html 是接入校园网的情况下，浏览器中�
 
 <br>
 
-***对于第n个容器***
+**对于第n个容器**
 
 可视化界面网址 http://10.193.0.11:60n4/vnc.html
 
@@ -278,7 +277,7 @@ ssh远程连接 `ssh -p 60n2 ubuntu@10.193.0.11`
 
 <br>
 
-***连接宿主机 ip 10.193.0.11***
+**连接宿主机 ip 10.193.0.11**
 ```
 ssh seulab@10.193.0.11
 seulab
