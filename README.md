@@ -30,7 +30,7 @@ nvidia-smi
 
 ***安装lxd,zfs和bridge-utils***
 ```
-sudo snap install lxd`<br>
+sudo snap install lxd
 sudo apt install zfsutils-linux bridge-utils
 ```
 
