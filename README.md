@@ -55,6 +55,7 @@ Size in GB of the new loop device (1GiB minimum) [default=30GiB]: 100GiB
 >网络配置采用创建桥接网络，宿主机为公网ip 10.193.0.11，其他容器为局域网ip，访问每个容器通过公网ip+端口号的形式<br>
 >通过命令`lxc network list`能够查看创建的桥接网络
 
+
 ## 创建容器 seulab
 ***通过命令`lxc launch ubuntu:20.04 seulab` 创建名为seulab的容器***
 > 容器相关命令：容器列表，进入容器，退出容器，删除容器，停止容器，重启容器
@@ -205,6 +206,7 @@ sudo snap install novnc
 sudo snap set novnc services.n6081.listen=6081 services.n6081.vnc=localhost:5901
 ```
 >创建一个侦听6081端口，并将6081连接到VNC服务器，VNC服务器在localhost的5901端口上运行
+
 
 ## 管理相关容器
 基于seulab容器，创建lab快照 `sudo lxc snapshot seulab lab`
