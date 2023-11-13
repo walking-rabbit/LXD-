@@ -100,7 +100,7 @@ sudo lxc config device add seulab proxy2 proxy listen=tcp:10.193.0.11:6004 conne
 
 <br>
 
-**容器内的环境配置**
+***容器内的环境配置***
 
 通过`lxc exec seulab bash`进入容器，容器内的环境配置在默认用户ubuntu的权限下继续
 ```
