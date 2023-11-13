@@ -1,4 +1,4 @@
-# 服务器搭建问题指南2023  王逸飞
+# 服务器搭建问题指南2023
 >参考网站:<br>
 >https://xungejiang.com/2022/07/14/lxd-new/<br>
 >https://www.wangt.cc/2021/09/%E5%9F%BA%E4%BA%8Elxd%E6%90%AD%E5%BB%BA%E5%A4%9A%E4%BA%BA%E5%85%B1%E7%94%A8gpu%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E7%AE%80%E5%8D%95%E6%98%93%E7%94%A8%EF%BC%8C%E5%85%A8%E7%BD%91%E6%9C%80%E8%AF%A6/<br>
@@ -100,6 +100,8 @@ sudo lxc config device add seulab proxy2 proxy listen=tcp:10.193.0.11:6004 conne
 
 `sudo lxc config device list seulab`
 >查看seulab容器添加的设备
+
+<br>
 
 **配置SSH连接**
 ```
