@@ -101,6 +101,15 @@ sudo lxc config device add seulab proxy2 proxy listen=tcp:10.193.0.11:6004 conne
 `sudo lxc config device list seulab`
 >查看seulab容器添加的设备
 
+**配置SSH连接**
+```
+vim /etc/ssh/sshd_config
+
+PermitRootLogin yes
+PasswordAuthentication yes
+
+/etc/init.d/ssh restart
+```
 <br>
 
 ## 容器内的环境配置
@@ -238,9 +247,9 @@ sudo lxc list
 
 **重新给容器XXX分配端口**
 ```
-sudo lxc config device add XXX proxy1 proxy listen=tcp:10.193.0.11:6012 connect=tcp:10.18.100.xxx:22 bind=host
-sudo lxc config device add XXX proxy0 proxy listen=tcp:10.193.0.11:6013 connect=tcp:10.18.100.xxx:3389 bind=host
-sudo lxc config device add XXX proxy2 proxy listen=tcp:10.193.0.11:6014 connect=tcp:10.18.100.xxx:6081 bind=host
+sudo lxc config device add XXX proxy1 proxy listen=tcp:10.193.0.11:60n2 connect=tcp:10.18.100.xxx:22 bind=host
+sudo lxc config device add XXX proxy0 proxy listen=tcp:10.193.0.11:60n3 connect=tcp:10.18.100.xxx:3389 bind=host
+sudo lxc config device add XXX proxy2 proxy listen=tcp:10.193.0.11:60n4 connect=tcp:10.18.100.xxx:6081 bind=host
 ```
 >初始容器seulab 10.193.0.11的三个端口为6002，6003，6004，每次新建容器后这三个端口需要+10,若XXX为从seulab复制创建的第一个容器，则对应的三个端口为6012，6013，6014<br>
 >若从seulab创建第n个容器，则该容器的三个端口分别对应n*10+2/3/4
