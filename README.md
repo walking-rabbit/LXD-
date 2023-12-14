@@ -86,7 +86,8 @@ sudo lxc config device add seulab ShareData disk source=/media/seulab/data1/dock
 
 **添加GPU硬件**
 
-`lxc config device add seulab gpu gpu`
+`lxc config device add seulab gpu gpu id=0`
+>需要制定gpu id=0
 
 <br>
 
