@@ -284,9 +284,9 @@ http://10.193.0.11:6014/vnc.html 是接入校园网的情况下，浏览器中�
 
 **对于第n个容器**
 
-可视化界面网址 http://10.193.0.11:60n4/vnc.html
+可视化界面网址 http://10.193.0.11:6xx4/vnc.html
 
-ssh远程连接 `ssh -p 60n2 ubuntu@10.193.0.11`
+ssh远程连接 `ssh -p 6xx2 ubuntu@10.193.0.11`
 >第n个容器不包括seulab
 
 <br>
